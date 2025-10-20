@@ -44,7 +44,7 @@ routes.post("/user/add", async (req, res) => {
       return res.status(400).json({ message: "phone number is required" });
     }
 
-    const user = userModel.findOne({ phone });
+    const user = await userModel.findOne({ phone: phone });
     if (user) {
       return res.status(400).json({ message: "User already exists" });
     }
@@ -56,6 +56,7 @@ routes.post("/user/add", async (req, res) => {
       phone,
       role: role || "user",
     });
+
     await newUser.save();
     res.status(201).json(newUser);
   } catch (error) {
